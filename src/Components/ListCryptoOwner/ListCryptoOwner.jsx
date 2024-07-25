@@ -69,6 +69,7 @@ const ListCryptoOwner = () => {
     else {
         return (
             <div>
+                <div><b>Data</b></div>
                 <div>{user.fname}</div>
                 <div>{user.lname}</div>
                 <div>{user.email}</div>
