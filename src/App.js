@@ -1,5 +1,4 @@
 import './App.css';
-import logo from './logo.svg';
 import LoginRegister from './Components/LoginRegister/LoginRegister';
 import ListCryptoOwner from './Components/ListCryptoOwner/ListCryptoOwner';
 import { RouterProvider,createBrowserRouter } from "react-router-dom";
