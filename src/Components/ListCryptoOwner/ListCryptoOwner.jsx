@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import './ListCryptoOwner.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,15 @@ const ListCryptoOwner = () => {
 
     const [isLoaded, setIsLoaded] = useState(true);
     const [user, setUser] = useState([]);
+
+    const handleForbiddenStatus = useCallback(() => {
+        MySwal.fire({
+            title: 'Access Forbidden',
+            icon: 'error'
+        }).then(() => {
+            navigate("/");
+        });
+    }, [MySwal, navigate]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -28,16 +37,11 @@ const ListCryptoOwner = () => {
                     setUser(result.user);
                     setIsLoaded(false);
                 } else if (result.status === 'forbidden') {
-                    MySwal.fire({
-                        title: <p>{result.message}</p>,
-                        icon: 'error'
-                    }).then(() => {
-                        navigate("/");
-                    });
+                    handleForbiddenStatus();
                 }
             })
             .catch((error) => console.error(error));
-    }, [])
+    }, [handleForbiddenStatus])
 
     const columns = [
         { field: 'id', headerName: '#', width: 120 },
