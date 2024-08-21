@@ -135,14 +135,14 @@ const LoginRegister = () => {
 
                     <div className='remember-forget'>
                         <label> <input type='checkbox' id='logincheckbox' /> Remember me </label>
-                        <a href='#'>Forget Password ?</a>
+                        <p>Forget Password ?</p>
                     </div>
 
                     <button type='submit'>Login</button>
 
                     <div className='register-link'>
                         <p>
-                            Don't have an account ? <a href='#' onClick={registerLink}>Register</a>
+                            Don't have an account ? <button type="button" onClick={registerLink} className="link-button"> Register </button>
                         </p>
                     </div>
                 </form>
@@ -190,7 +190,7 @@ const LoginRegister = () => {
 
                     <div className='register-link'>
                         <p>
-                            Already have an account ? <a href='#' onClick={loginLink}>login</a>
+                            Already have an account ? <button type="button" onClick={loginLink} className="link-button"> login </button>
                         </p>
                     </div>
                 </form>
