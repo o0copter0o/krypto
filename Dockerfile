@@ -1,10 +1,12 @@
 FROM node:alpine3.19
 
-WORKDIR /app
+RUN mkdir /usr/src/app
 
-COPY . .
+WORKDIR /usr/src/app
 
-ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
+
+COPY package.json /usr/src/app/package.json
 
 RUN npm install
 RUN npm i react-sweetalert2
