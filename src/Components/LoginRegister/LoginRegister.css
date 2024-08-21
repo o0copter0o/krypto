@@ -131,3 +131,17 @@ form .register-link {
 .register-link p a:hover {
     text-decoration: underline;
 }
+
+.link-button {
+    background: none;
+    color: blue;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+.link-button:hover {
+    color: darkblue;
+}
