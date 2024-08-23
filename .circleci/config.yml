@@ -3,9 +3,17 @@ orbs:
   node: circleci/node@5.0.2
   heroku: circleci/heroku@1.2.6
 
+parameters:
+  BOT_EMAIL: 
+    type: string
+    default: "current"
+  BOT_USERNAME: 
+    type: string
+    default: "current"
+
 jobs:
-  build_and_test: # this can be any name you choose
-    executor: node/default # use the default executor defined within the orb
+  Build_And_Test:
+    executor: node/default
     steps:
       - checkout
       - node/install-packages:
@@ -20,26 +28,26 @@ jobs:
           root: ~/project
           paths:
             - .
-            
-  deploy: # this can be any name you choose
-    executor: heroku/default
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - heroku/deploy-via-git:
-          force: true # force push when pushing to the heroku remote, see: 
+
+#  deploy: # this can be any name you choose
+#    executor: heroku/default
+#    steps:
+#      - attach_workspace:
+#          at: ~/project
+#      - heroku/deploy-via-git:
+#          force: true # force push when pushing to the heroku remote, see: 
 
 workflows:
-  build_test_deploy: # this can be any name you choose
+  Build_Test_Deploy:
     jobs:
-      - build_and_test:
+      - Build_And_Test:
           filters:
             branches:
               only: main
-                
-      - deploy:
-          requires:
-            - build_and_test # only deploy if the build_and_test job has completed
-          filters:
-            branches:
-              only: main # only deploy when on main
+
+#      - deploy:
+#          requires:
+#            - build_and_test # only deploy if the build_and_test job has completed
+#          filters:
+#            branches:
+#              only: main # only deploy when on main

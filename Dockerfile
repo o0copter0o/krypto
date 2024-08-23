@@ -11,4 +11,6 @@ COPY package.json /usr/src/app/package.json
 RUN npm install
 RUN npm i react-sweetalert2
 
+EXPOSE 3000
+
 CMD [ "npm","start" ]
