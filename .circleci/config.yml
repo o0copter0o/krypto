@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
-  heroku: circleci/heroku@1.2.6
+#  heroku: circleci/heroku@1.2.6
 
 parameters:
   BOT_EMAIL: 
@@ -10,6 +10,12 @@ parameters:
   BOT_USERNAME: 
     type: string
     default: "current"
+  DOCKER_USERNAME: 
+    type: string
+    default: "ctnantiphat"
+  DOCKER_REGISTRY: 
+    type: string
+    default: "krypto-image"
 
 jobs:
   Build_And_Test:
@@ -24,10 +30,21 @@ jobs:
       - run:
           command: npm run build
           name: Build app
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
+  Build_Container:
+    docker:
+      - image: public.ecr.aws/kubeopsskills/circleci:1.0.0-docker-gcloud
+    steps:
+      - checkout
+      - run:
+          name: Login Docker By Username Docker Registry
+          command: |
+            docker login -u ctnantiphat -p cC26042541
+      - run:
+          name: Build Image And Push Image To Registry DockerHub
+          command: |
+            echo "export COMMIT_ID=$(git log --format="%H" -n 2 | head -n 1)"
+            docker build -t $REGISTRY/<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID .
+            docker push $REGISTRY/<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID
 
 #  deploy: # this can be any name you choose
 #    executor: heroku/default
@@ -44,6 +61,9 @@ workflows:
           filters:
             branches:
               only: main
+      - Build_Container:
+          requires:
+            - Build_And_Test
 
 #      - deploy:
 #          requires:
