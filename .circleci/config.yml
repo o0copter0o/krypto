@@ -16,6 +16,12 @@ parameters:
   DOCKER_REGISTRY: 
     type: string
     default: "krypto-image"
+  DOCKER_USER: 
+    type: string
+    default: "ctnantiphat"
+  DOCKER_PASS: 
+    type: string
+    default: "cC26042541"
 
 jobs:
   Build_And_Test:
@@ -38,13 +44,13 @@ jobs:
       - run:
           name: Login Docker By Username Docker Registry
           command: |
-            docker login -u ctnantiphat -p cC26042541
+            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
       - run:
           name: Build Image And Push Image To Registry DockerHub
           command: |
             echo "export COMMIT_ID=$(git log --format="%H" -n 2 | head -n 1)"
-            docker build -t $REGISTRY/<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID .
-            docker push $REGISTRY/<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID
+            docker build -t $<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID .
+            docker push $<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID
 
 #  deploy: # this can be any name you choose
 #    executor: heroku/default
