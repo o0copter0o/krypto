@@ -42,14 +42,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Login Docker By Username Docker Registry
-          command: |
-            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
-      - run:
-          name: Build Image And Push Image To Registry DockerHub
+          name: Build Image Login Docker By Username Docker Registry And Push Image To Registry DockerHub
           command: |
             echo "export COMMIT_ID=$(git log --format="%H" -n 2 | head -n 1)"
             docker build -t $<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID .
+            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
             docker push $<< pipeline.parameters.DOCKER_USERNAME >>/<< pipeline.parameters.DOCKER_REGISTRY >>:$COMMIT_ID
 
 #  deploy: # this can be any name you choose
